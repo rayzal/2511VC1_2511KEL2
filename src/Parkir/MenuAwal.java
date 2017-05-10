@@ -5,6 +5,7 @@
  */
 package Parkir;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,8 +17,11 @@ public class MenuAwal extends javax.swing.JFrame {
     /**
      * Creates new form MenuAwal
      */
+    ImageIcon imageicon;
     public MenuAwal() {
         initComponents();
+        imageicon = new ImageIcon("src/icon/Icon2.png");
+        setIconImage(imageicon.getImage());
     }
 
     /**
@@ -30,8 +34,8 @@ public class MenuAwal extends javax.swing.JFrame {
     private void initComponents() {
 
         panel1 = new usu.widget.Panel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        MenuMotor = new javax.swing.JLabel();
+        MenuMobil = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -41,18 +45,23 @@ public class MenuAwal extends javax.swing.JFrame {
 
         panel1.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/image/pilmenu1.jpg"))); // NOI18N
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/menumotor.jpg"))); // NOI18N
-        jLabel1.setToolTipText("Parkir Motor");
-        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+        MenuMotor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/menumotor.jpg"))); // NOI18N
+        MenuMotor.setToolTipText("Parkir Motor");
+        MenuMotor.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        MenuMotor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
+                MenuMotorMouseClicked(evt);
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/menumobil.jpg"))); // NOI18N
-        jLabel2.setToolTipText("ParkirMobil");
-        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        MenuMobil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/menumobil.jpg"))); // NOI18N
+        MenuMobil.setToolTipText("ParkirMobil");
+        MenuMobil.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        MenuMobil.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                MenuMobilMouseClicked(evt);
+            }
+        });
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/btnExit.jpg"))); // NOI18N
         jLabel3.setToolTipText("Keluar Program");
@@ -69,22 +78,22 @@ public class MenuAwal extends javax.swing.JFrame {
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
                 .addGap(70, 70, 70)
-                .addComponent(jLabel1)
+                .addComponent(MenuMotor)
                 .addGap(76, 76, 76)
-                .addComponent(jLabel2)
+                .addComponent(MenuMobil)
                 .addContainerGap(84, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
-                .addGap(5, 5, 5))
+                .addGap(19, 19, 19))
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
                 .addContainerGap(168, Short.MAX_VALUE)
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
+                    .addComponent(MenuMobil)
+                    .addComponent(MenuMotor))
                 .addGap(46, 46, 46)
                 .addComponent(jLabel3)
                 .addGap(19, 19, 19))
@@ -98,14 +107,21 @@ public class MenuAwal extends javax.swing.JFrame {
 
     private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
         // TODO add your handling code here:
-        System.exit(0);
+        this.dispose();
+        new LoginForm().setVisible(true);
     }//GEN-LAST:event_jLabel3MousePressed
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+    private void MenuMotorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MenuMotorMouseClicked
         // TODO add your handling code here:
         this.dispose();
         new AppMotor().setVisible(true);
-    }//GEN-LAST:event_jLabel1MouseClicked
+    }//GEN-LAST:event_MenuMotorMouseClicked
+
+    private void MenuMobilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MenuMobilMouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        new AppMobil().setVisible(true);
+    }//GEN-LAST:event_MenuMobilMouseClicked
 
     /**
      * @param args the command line arguments
@@ -145,8 +161,8 @@ public class MenuAwal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel MenuMobil;
+    private javax.swing.JLabel MenuMotor;
     private javax.swing.JLabel jLabel3;
     private usu.widget.Panel panel1;
     // End of variables declaration//GEN-END:variables

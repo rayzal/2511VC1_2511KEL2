@@ -6,6 +6,7 @@
 package Parkir;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 /**
  *
  * @author Miechel
@@ -15,10 +16,13 @@ public class Splash extends javax.swing.JDialog {
     /**
      * Creates new form Splash
      */
+    ImageIcon imageicon;
     public Splash() {
         setUndecorated(true);
         initComponents();
         progBar.setStringPainted(true);
+        imageicon = new ImageIcon("src/icon/Icon2.png");
+        setIconImage(imageicon.getImage());
     }
 
     /**

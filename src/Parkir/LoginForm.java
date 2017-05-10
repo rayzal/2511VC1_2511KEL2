@@ -5,7 +5,10 @@
  */
 package Parkir;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.*;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,17 +16,19 @@ import javax.swing.JOptionPane;
  * @author Miechel
  */
 public class LoginForm extends javax.swing.JFrame {
-//    Connection Con;
-//    private ResultSet RsUser;
-//    Statement stm;
-//    private Connection connection;
-//    private Statement statement;
     /**
      * Creates new form LoginForm
      */
+    ImageIcon imageicon;
     public LoginForm() {
         initComponents();
-//        open_db();
+        imageicon = new ImageIcon("src/icon/Icon2.png");
+        setIconImage(imageicon.getImage());
+    }
+    public void reset(){
+        txtUsername.setText("");
+        txtPassword.setText("");
+        txtUsername.requestFocus();
     }
     
     public void ProsesLogin(String username,String password){
@@ -32,14 +37,30 @@ public class LoginForm extends javax.swing.JFrame {
             Statement stt = con.createStatement();
             ResultSet rss = stt.executeQuery("select * from user where username='"+username+"'");
             if(rss.next()){
-                if(password.equals(rss.getString("password")))
-                      this.dispose();
-                  
-                      new MenuAwal().setVisible(true);
-                    JOptionPane.showMessageDialog(null,"Anda Berhasil Login");                    
+                if(password.equals(rss.getString("password"))){
+                    Statement stt1 = con.createStatement();
+                    ResultSet rss1 = stt1.executeQuery("select * from user where username='"+username+"' AND level='0'");
+                    if(rss1.next()){
+                        new Admin().setVisible(true);
+                        this.dispose();
+                        reset();
+                    }else{
+                        new MenuAwal().setVisible(true);
+                        this.dispose();
+                        reset();
+                    }
+                    rss1.close();
+                    stt1.close();
+                    rss.close();
+                    stt.close();
             }else{
-                    JOptionPane.showMessageDialog(null,"Password Anda salah");
+                    JOptionPane.showMessageDialog(null,"Username Atau Password Anda salah");
+                    reset();
             }
+            }else{
+                    JOptionPane.showMessageDialog(null,"Username tidak ditemukan");
+                    reset();
+                    }
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -58,9 +79,8 @@ public class LoginForm extends javax.swing.JFrame {
         panel1 = new usu.widget.Panel();
         txtUsername = new javax.swing.JTextField();
         txtPassword = new javax.swing.JPasswordField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        LBlogin = new javax.swing.JLabel();
+        LBexit = new javax.swing.JLabel();
 
         setTitle("FORM LOGIN");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -72,29 +92,31 @@ public class LoginForm extends javax.swing.JFrame {
             }
         });
 
-        panel1.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/image/FormLogin.jpg"))); // NOI18N
+        panel1.setBackgroundImage(new javax.swing.ImageIcon(getClass().getResource("/image/Login.jpg"))); // NOI18N
 
         txtUsername.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
 
         txtPassword.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/btnLogin.jpg"))); // NOI18N
-        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel1MousePressed(evt);
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyPressed(evt);
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/btnUlang.jpg"))); // NOI18N
-        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        LBlogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/btnLogin.jpg"))); // NOI18N
+        LBlogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        LBlogin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                LBloginMousePressed(evt);
+            }
+        });
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/btnExit.jpg"))); // NOI18N
-        jLabel3.setToolTipText("Keluar Program");
-        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+        LBexit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/btnExit.jpg"))); // NOI18N
+        LBexit.setToolTipText("Keluar Program");
+        LBexit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        LBexit.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel3MouseClicked(evt);
+                LBexitMouseClicked(evt);
             }
         });
 
@@ -107,12 +129,10 @@ public class LoginForm extends javax.swing.JFrame {
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
                     .addComponent(txtUsername)
-                    .addGroup(panel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+                        .addComponent(LBlogin)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(LBexit)))
                 .addContainerGap(372, Short.MAX_VALUE))
         );
         panel1Layout.setVerticalGroup(
@@ -124,9 +144,8 @@ public class LoginForm extends javax.swing.JFrame {
                 .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2))
+                    .addComponent(LBlogin)
+                    .addComponent(LBexit))
                 .addGap(91, 91, 91))
         );
 
@@ -149,37 +168,31 @@ public class LoginForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowOpened
 
-    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+    private void LBexitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LBexitMouseClicked
         // TODO add your handling code here:
         System.exit(0);
-    }//GEN-LAST:event_jLabel3MouseClicked
+    }//GEN-LAST:event_LBexitMouseClicked
 
-    private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
+    private void LBloginMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LBloginMousePressed
         // TODO add your handling code here:
-//        try{
-//            char[] input=txtPassword.getPassword();
-//            String password;
-//            password = new String(txtPassword.getPassword());
-//            statement = connection.createStatement();
-//            
-//            RsUser=statement.executeQuery("select * from user where username='"+txtUsername.getText()+"' and passowrd='"+password+"')");
-//            int baris=0;
-//            while(RsUser.next()){
-//                baris=RsUser.getRow();
-//            }
-//            if(baris==1)
-//            {
-//                JOptionPane.showMessageDialog(null,"Berhasil Login");
-//                System.exit(0);
-//                new MenuAwal().setVisible(true);
-//            }else{
-//                JOptionPane.showMessageDialog(null,"Username atau password salah");
-//            }
-//        }catch(SQLException e){
-//            JOptionPane.showMessageDialog(null,e);
-//        }
     ProsesLogin(txtUsername.getText(),txtPassword.getText());
-    }//GEN-LAST:event_jLabel1MousePressed
+    }//GEN-LAST:event_LBloginMousePressed
+
+    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
+        // TODO add your handling code here:
+        txtPassword.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e){
+                char karakter = e.getKeyChar();
+                
+                if(karakter == '\n'){
+                    e.consume();
+                    txtPassword.removeKeyListener(this);
+                    ProsesLogin(txtUsername.getText(),txtPassword.getText());
+                }
+                txtPassword.removeKeyListener(this);
+            }
+        });
+    }//GEN-LAST:event_txtPasswordKeyPressed
 
     /**
      * @param args the command line arguments
@@ -217,32 +230,10 @@ public class LoginForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel LBexit;
+    private javax.swing.JLabel LBlogin;
     private usu.widget.Panel panel1;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
-//private void open_db(){
-//    try{
-//    Class.forName("com.mysql.jdbc.Driver");
-//    Con = (Connection)DriverManager.getConnection("jdbc:mysql://localhost:3306/parkirmall", "root","");
-//        System.out.println("Koneksi Berhasil");
-//    }catch(SQLException e){
-//        System.out.println("Error : "+e);
-//    }   catch (ClassNotFoundException ex) {
-//            Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//}
-
-//private void open_db(){
-//try{
-//Class. forName("com.mysql.jdbc.Driver");
-//connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/parkirmall", "root","");
-//statement = connection.createStatement();
-//} catch (SQLException | ClassNotFoundException ex){
-//Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
-//}
-//}
 }
